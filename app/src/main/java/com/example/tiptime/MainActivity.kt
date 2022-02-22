@@ -26,8 +26,9 @@ class MainActivity : AppCompatActivity() {
         if (cost == null) {
 
             //to update textview when entry is empty
-            binding.tipResult.text="" //it will clear the tip amount
+            displayTip(0.0)
             return
+
         }
 
         //Get tip percentage..from which the user selected from a RadioGroup of RadioButtons.
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
             else -> 0.15
         }
 
+        //Round of
         //Calculate the tip and round it of
         var tip = tipPercentage * cost
 
@@ -46,10 +48,19 @@ class MainActivity : AppCompatActivity() {
             tip = kotlin.math.ceil(tip)
         }
 
+        //changing to currency
         NumberFormat.getCurrencyInstance()
 
         val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
 
+        binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
+
+        // Display the formatted tip value on screen
+        displayTip(tip)
+    }
+
+    private fun displayTip(tip : Double) {
+        val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
         binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
     }
 }
