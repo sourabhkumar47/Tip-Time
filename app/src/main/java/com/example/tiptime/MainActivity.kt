@@ -7,7 +7,7 @@ import java.text.NumberFormat
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,19 +17,23 @@ class MainActivity : AppCompatActivity() {
         binding.calculateButton.setOnClickListener{ calculateTip()}
     }
 
-    fun calculateTip() {
+    private fun calculateTip() {
         // Get the text from textfield
         val stringInTextField = binding.costOfService.text.toString()
+
+        //added null , if text field is empty app should not crash
         val cost = stringInTextField.toDoubleOrNull()
         if (cost == null) {
+
+            //to update textview when entry is empty
+            binding.tipResult.text="" //it will clear the tip amount
             return
         }
 
         //Get tip percentage..from which the user selected from a RadioGroup of RadioButtons.
-        val selectedId = binding.tipOptions.checkedRadioButtonId
 
         //Check which radio button is selected
-        val tipPercentage = when (selectedId){
+        val tipPercentage = when (binding.tipOptions.checkedRadioButtonId){
             R.id.option_twenty_percent -> 0.20
             R.id.option_eighteen_percent -> 0.18
             else -> 0.15
@@ -37,9 +41,8 @@ class MainActivity : AppCompatActivity() {
 
         //Calculate the tip and round it of
         var tip = tipPercentage * cost
-        val roundUp = binding.roundUpSwitch.isChecked
 
-        if (roundUp) {
+        if (binding.roundUpSwitch.isChecked) {
             tip = kotlin.math.ceil(tip)
         }
 
