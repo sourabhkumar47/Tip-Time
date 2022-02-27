@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun calculateTip() {
         // Get the text from textfield
-        val stringInTextField = binding.costOfService.text.toString()
+        val stringInTextField = binding.costOfServiceEditText.text.toString()
 
         //added null , if text field is empty app should not crash
         val cost = stringInTextField.toDoubleOrNull()
