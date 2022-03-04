@@ -17,8 +17,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
-        binding.calculateButton.setOnClickListener{ calculateTip()}
+
+        binding.calculateButton.setOnClickListener { calculateTip() }
+
+        binding.costOfServiceEditText.setOnKeyListener { view, keyCode, _ ->
+            handleKeyEvent(
+                view,
+                keyCode
+            )
+        }
     }
 
     private fun calculateTip() {
@@ -38,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         //Get tip percentage..from which the user selected from a RadioGroup of RadioButtons.
 
         //Check which radio button is selected
-        val tipPercentage = when (binding.tipOptions.checkedRadioButtonId){
+        val tipPercentage = when (binding.tipOptions.checkedRadioButtonId) {
             R.id.option_twenty_percent -> 0.20
             R.id.option_eighteen_percent -> 0.18
             else -> 0.15
@@ -63,17 +70,19 @@ class MainActivity : AppCompatActivity() {
         displayTip(tip)
     }
 
-    private fun displayTip(tip : Double) {
+    private fun displayTip(tip: Double) {
         val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
         binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
     }
-    private fun handleKeyEvent(view: View,keyCode: Int) : Boolean {
-        if(keyCode == KeyEvent.KEYCODE_ENTER){
+
+    private fun handleKeyEvent(view: View, keyCode: Int): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_ENTER) {
             //HIde the Keyboard
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(view.windowToken,0)
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
             return true
         }
-        return  false
+        return false
     }
 }
